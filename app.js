@@ -20,4 +20,4 @@ app.get('/',(req, res)=>{
 
 
 app.get('/posts', postsController.index)
-app.get('/:slug', postsController.show)
+app.get('/posts/:slug', postsController.show)
