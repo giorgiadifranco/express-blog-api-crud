@@ -1,5 +1,6 @@
 const express = require ('express');
 const app = express()
+
 //const postsRicette = require('./db/db.js')
 const postsRoutes = require('./routes/posts.js')
 
@@ -18,6 +19,6 @@ app.get('/',(req, res)=>{
 
 
 app.use('/posts', postsRoutes)
-
+app.use(express.json())
 
 
