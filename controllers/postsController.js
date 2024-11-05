@@ -11,16 +11,19 @@ const index = (req, res)=>{
 const show = (req, res)=>{
 
     
-    const post = posts.find( post => post.slug === req.params.slug)
-    console.log(post)
-
-    //const params = req.params
-    //console.log(params);
-    res.json({
-        data : post
-    })
+    const post = posts.find( (post) => post.slug === req.params.slug)
     
-}
+    if (!post){
+        return res.status(404).json({ error:`no post with ${JSON.stringify(post, null, 4)}`})
+    }
+
+  
+    return res.status(200).json({data: post})
+       
+
+    }
+    
+
 
 module.exports = {
 
