@@ -1,7 +1,7 @@
 const express = require ('express');
 const app = express()
 //const postsRicette = require('./db/db.js')
-const postsController = require('./controllers/postsController.js')
+const postsRoutes = require('./routes/posts.js')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT
@@ -17,7 +17,7 @@ app.get('/',(req, res)=>{
 })
 
 
+app.use('/posts', postsRoutes)
 
 
-app.get('/posts', postsController.index)
-app.get('/posts/:slug', postsController.show)
+

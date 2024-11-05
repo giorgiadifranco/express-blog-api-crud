@@ -1,5 +1,5 @@
 // seconda rotta -- response con formato json
-const posts = require ('../db/db.js')
+const posts = require('../db/db.js')
 
 const index = (req, res)=>{
     res.status(200).json({
@@ -22,11 +22,18 @@ const show = (req, res)=>{
        
 
     }
-    
+
+const store = (req, res)=>{
+
+        //console.log(req.body);
+        
+
+}
 
 
 module.exports = {
 
     index,
-    show
+    show, 
+    store
 }
