@@ -29,6 +29,7 @@ const store = (req, res)=>{
     const post = {
         title: req.body.title,
         slug: req.body.slug,
+        content: req.body.content,
         image: req.body.image,
         ingredients: req.body.ingredients
        }
