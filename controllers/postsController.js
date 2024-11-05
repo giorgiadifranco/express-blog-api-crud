@@ -1,5 +1,6 @@
 // seconda rotta -- response con formato json
 const posts = require('../db/db.js')
+const fs = require('fs')
 
 const index = (req, res)=>{
     res.status(200).json({
@@ -24,9 +25,24 @@ const show = (req, res)=>{
     }
 
 const store = (req, res)=>{
-
+    
+   const post = {
+    title: req.body.title,
+    slug: req.body.slug,
+    image: req.body.image,
+    ingredients: req.body.ingredients
+   }
         //console.log(req.body);
-        
+    
+    posts.push(post)
+
+    fs.writeFileSync('../db/db.js', `module.exports = ${JSON.stringify(posts, null, 4)}` )
+    
+    return res.status(201).json({
+        status: 201,
+        data: posts,
+        count: posts.length
+    })
 
 }
 

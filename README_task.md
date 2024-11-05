@@ -20,8 +20,9 @@ Usando l'array dei post fornito con le relative immagini:
 
 
 ## Bonus
-Creare inoltre un filtro in querystring per tag, che ritorna in formato json tutti i post che hanno quei tag
-Aggiungi il metodo store per la creazione di un nuovo post
+a. Creare inoltre un filtro in querystring per tag, che ritorna in formato json tutti i post che hanno quei tag
+
+b. Aggiungi il metodo store per la creazione di un nuovo post
 
 
 ## 05/11/2024
