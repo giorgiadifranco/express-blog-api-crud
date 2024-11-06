@@ -12,7 +12,7 @@ const index = (req, res)=>{
 const show = (req, res)=>{
 
     
-    const post = posts.find( (post) => post.slug === req.params.slug)
+    const post = posts.find( (post) => post.slug == req.params.slug)
     
     if (!post){
         return res.status(404).json({ error:`no post with ${JSON.stringify(post, null, 4)}`})
@@ -78,7 +78,7 @@ post.title = req.body.title
 post.slug = req.body.slug
 post.content = req.body.content
 post.image = req.body.image
-post.tags = req. body.tags
+post.tags = req.body.tags
 
  
 
@@ -91,6 +91,31 @@ return res.json({
 })
 
 }
+
+const destroy = (req, res)=> {
+
+    const post = posts.find( (post) => post.slug === req.params.slug)
+
+
+    //check if the posts exists
+if(!post){
+    return res.status(404).json({ 
+
+        error:`no post with ${JSON.stringify(post, null, 4)}`
+
+});
+}
+newPosts = posts.filter(post => post.slug !== req.params.slug)
+    //update the file with the new data
+    fs.writeFileSync('./db/db.js', `module.exports = ${JSON.stringify(newPosts, null, 4)}` )
+
+
+    res.json({
+        status: 201,
+        data: newPosts,
+        counter: newPosts.length
+      })
+}
  
 
 
@@ -102,5 +127,6 @@ module.exports = {
     index,
     show, 
     store,
-    update
+    update,
+    destroy
 }
