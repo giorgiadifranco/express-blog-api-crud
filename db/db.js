@@ -1,16 +1,6 @@
 module.exports = [
     {},
     {
-        "title": "Pasta barbabietola e gorgonzola",
-        "slug": "pasta-barbabietola-e-gorgonzola",
-        "content": "La nostra ricetta della pasta barbabietola e gorgonzola vuole ricreare in questo primo piatto un abbinamento appetitoso, già proposto con la torta salata alla barbabietola! Per un pranzo veloce ma gustoso, per chi ama giocare con consistenze e colori naturali in cucina, questa pasta è perfetta! La dolcezza della barbabietola smorza il gusto deciso che caratterizza questo formaggio erborinato molto amato, un'abbinata vincente e molto gustosa. Provate un nuovo condimento per la vostra pasta e sperimentate altre sfiziose varianti:\n            Pasta con barbabietola e pecorino\n            Gnocchi di barbabietola\n            Tagliatelle alla barbabietola con asparagi",
-        "image": "pasta_barbabietola.jpeg",
-        "tags": [
-            "Primi piatti",
-            "Ricette vegetariane"
-        ]
-    },
-    {
         "title": "Pane fritto dolce",
         "slug": "pane-fritto-dolce",
         "content": "Il pane fritto dolce è la versione più antica dell’odierno french toast! Una deliziosa ricetta antispreco che le nonne preparavano ai bambini per merenda, utilizzando gli ingredienti che si avevano sempre a disposizione in casa: pane raffermo, uova, latte e zucchero, che noi abbiamo deciso di aromatizzare con un pizzico di cannella. Facile e veloce da realizzare, il pane fritto dolce vi riporterà con la mente ai sapori dell’infanzia… gustatelo da solo o accompagnatelo con frutta fresca e yogurt per uno spuntino tanto goloso quanto genuino!",
@@ -38,11 +28,6 @@ module.exports = [
     {
         "title": "Pasta zucca e funghi",
         "slug": "pasta-zucca-e-zola",
-        "content": "La nostra ricetta della pasta zucca e feta vuole ricreare in questo primo piatto un abbinamento appetitoso, già proposto con la torta salata alla zucca! Per un pranzo veloce ma gustoso, per chi ama giocare con consistenze e colori naturali in cucina, questa pasta è perfetta! La dolcezza della barbabietola smorza il gusto deciso che caratterizza questo formaggio erborinato molto amato, un'abbinata vincente e molto gustosa. Provate un nuovo condimento per la vostra pasta e sperimentate altre sfiziose varianti:\n            Pasta con barbabietola e pecorino\n            Gnocchi di barbabietola\n            Tagliatelle alla barbabietola con asparagi"
-    },
-    {
-        "title": "Pasta zucca e funghi",
-        "slug": "pasta-zucca",
         "content": "La nostra ricetta della pasta zucca e feta vuole ricreare in questo primo piatto un abbinamento appetitoso, già proposto con la torta salata alla zucca! Per un pranzo veloce ma gustoso, per chi ama giocare con consistenze e colori naturali in cucina, questa pasta è perfetta! La dolcezza della barbabietola smorza il gusto deciso che caratterizza questo formaggio erborinato molto amato, un'abbinata vincente e molto gustosa. Provate un nuovo condimento per la vostra pasta e sperimentate altre sfiziose varianti:\n            Pasta con barbabietola e pecorino\n            Gnocchi di barbabietola\n            Tagliatelle alla barbabietola con asparagi"
     }
 ]
