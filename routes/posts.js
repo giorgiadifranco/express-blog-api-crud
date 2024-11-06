@@ -12,4 +12,8 @@ router.get('/:slug', postsController.show)
 
 router.post('/', postsController.store)
 
+//UPDATE
+
+router.put('/:slug', postsController.update)
+
 module.exports = router
