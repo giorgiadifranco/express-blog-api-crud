@@ -20,7 +20,8 @@ Usando l'array dei post fornito con le relative immagini:
 
 
 ## Bonus
-a. Creare inoltre un filtro in querystring per tag, che ritorna in formato json tutti i post che hanno quei tag
+a. 
+, che ritorna in formato json tutti i post che hanno quei tag
 
 b. Aggiungi il metodo store per la creazione di un nuovo post
 

@@ -55,9 +55,11 @@ const store = (req, res)=>{
 
 }
 
-//BONUS > PUT
+// PUT
 
-const update = (req, res)=> {
+const update = (req, res)=>{
+    console.log(req.params);
+    
     //find the post by slug
     const post = posts.find( post => post.slug === req.params.slug)
 
@@ -68,8 +70,8 @@ if(!post){
         error:`no post with ${JSON.stringify(post, null, 4)}`
 
 });
-
 }
+
 //update the post object
 
 post.title = req.body.title
@@ -77,25 +79,28 @@ post.slug = req.body.slug
 post.content = req.body.content
 post.image = req.body.image
 post.tags = req. body.tags
+
+ 
+
+fs.writeFileSync('./db/db.js', `module.exports = ${JSON.stringify(posts, null, 4)}`)
+
+return res.json({ 
+    status: 201,
+    data: posts,
+    count: posts.length
+})
+
 }
- posts.push(post) 
-
-router.put(function (req, res) {
-    // just an example of maybe updating the user
-    req.post.slug = req.params.name
-    // save user ... etc
-    res.json(req.post)
-  })
+ 
 
 
-/*
-const update = (req, res) => {
-    res.send('Update the book')
-  })*/
+
+
 
 module.exports = {
 
     index,
     show, 
     store,
+    update
 }

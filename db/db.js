@@ -71,5 +71,10 @@ module.exports = [
         "title": "Pasta zucca e feta",
         "slug": "pasta-zucca-e-feta",
         "content": "La nostra ricetta della pasta zucca e feta vuole ricreare in questo primo piatto un abbinamento appetitoso, già proposto con la torta salata alla zucca! Per un pranzo veloce ma gustoso, per chi ama giocare con consistenze e colori naturali in cucina, questa pasta è perfetta! La dolcezza della barbabietola smorza il gusto deciso che caratterizza questo formaggio erborinato molto amato, un'abbinata vincente e molto gustosa. Provate un nuovo condimento per la vostra pasta e sperimentate altre sfiziose varianti:\n            Pasta con barbabietola e pecorino\n            Gnocchi di barbabietola\n            Tagliatelle alla barbabietola con asparagi"
+    },
+    {
+        "title": "Pasta zucca e funghi",
+        "slug": "pasta-zucca-e-feta",
+        "content": "La nostra ricetta della pasta zucca e feta vuole ricreare in questo primo piatto un abbinamento appetitoso, già proposto con la torta salata alla zucca! Per un pranzo veloce ma gustoso, per chi ama giocare con consistenze e colori naturali in cucina, questa pasta è perfetta! La dolcezza della barbabietola smorza il gusto deciso che caratterizza questo formaggio erborinato molto amato, un'abbinata vincente e molto gustosa. Provate un nuovo condimento per la vostra pasta e sperimentate altre sfiziose varianti:\n            Pasta con barbabietola e pecorino\n            Gnocchi di barbabietola\n            Tagliatelle alla barbabietola con asparagi"
     }
 ]
