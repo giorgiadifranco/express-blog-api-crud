@@ -2,8 +2,10 @@ const express = require ('express');
 const app = express()
 app.use(express.json())
 
+
 //const postsRicette = require('./db/db.js')
-const postsRoutes = require('./routes/posts.js')
+const postsRoutes = require('./routes/posts.js');
+const notFoundMiddleware = require('./middleware/notFoundMiddleware.js');
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT
@@ -23,3 +25,4 @@ app.use('/posts', postsRoutes)
 
 
 
+app.use(notFoundMiddleware)
