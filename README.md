@@ -159,7 +159,7 @@ touch controllers/pizza-controller.js
 
 ```
 
-In the controller file we can move our menu import and update its path
+In the controllr file we can move our menu import and update its path
 then we can grab the functions we created for our routes earlier and place them inside a controller.
 
 ### Index method
@@ -450,15 +450,16 @@ Let's start by creating a new route in our routes file that will handle the inco
 
 
 // routes/pizza.js
-router.post("/", PizzaController.store)
+router.post("/pizze", PizzaController.store)
 
 ```
 
 The route must use the post method to handle the incoming data.
 
-Now let's create a new controller method for this route.
+Now let's create a new controller's method for this route.
 
 ```js
+// /controllers/PizzaController.js
 const store = (req, res) => {
   // add the pizza to our menu array
 }
@@ -482,7 +483,7 @@ Before this can work we need to export the method, so we need to update the expo
 module.exports = {
   index,
   show,
-  create
+  store
 }
 ```
 
@@ -563,7 +564,7 @@ not using a database but an array in memory. We will fix that later adding a rea
 Thanks to the previous code, we have a new pizza added to the menu. Now let's update the `menu.js` file. We can do that using the
 built-in node module `fs`.
 
-First of all we need to import it at the top of our controller file.
+Fist of all we need to import it at the top of our controller file.
 
 ```js
 const fs = require('fs')
@@ -584,225 +585,562 @@ The `JSON.stringify()` method converts an object or any other value in JSON. Not
 Our store method now looks like this:
 
 ```js
-
-const create = (req, res) => {
-  // add the new pizza to the menu array
-  console.log(req.body);
-
-  // create the new pizza object
-  const pizza = {
-    id: Number(menu[menu.length - 1].id + 1),
-    name: req.body.name,
-    slug: req.body.slug,
-    image: req.body.image || "https://via.placeholder.com/350x150",
-    ingredients: req.body.ingredients,
-  };
-
-  // push it to our menu array
-  // 💡 The update will not persist as the array is in memory.
-  //menu.push(pizza)
-
-  // update the js file
-  fs.writeFileSync('./db/menu.js', `module.exports = ${JSON.stringify(menu, null, 4)}`)
-  // return the new menu
-  return res.status(201).json({
-    status: 201,
-    data: menu,
-    count: menu.length
-  })
-
-}
-
-```
-### Update the menu.js file
-
-Thanks to the previous code, we have a new pizza added to the menu. Now let's update the `menu.js` file. We can do that using the
-built-in node module `fs`.
-
-First of all we need to import it at the top of our controller file.
-
-```js
-const fs = require('fs')
-```
-
-Now we can update our store method. We need to use the `writeFileSync()` method instead of the `push()` method to make things persistent a little bit.
-
-```js
-// update the js file
-fs.writeFileSync('./db/menu.js', `module.exports = ${JSON.stringify(menu, null, 4)}`)
-```
-
-In the code above we used the `writeFileSync()` method to write back our menu array into a file called `menu.js`. The first parameter is the path of the file and the second one is the content that will be written into.
-
-The `JSON.stringify()` method converts an object or any other value in JSON. Note that we passed the third argument to format our JSON properly.
-
-**Final code**
-Our store method now looks like this:
-
-```js
-
-const create = (req, res) => {
-  // add the new pizza to the menu array
-  console.log(req.body);
-
-  // create the new pizza object
-  const pizza = {
-    id: Number(menu[menu.length - 1].id + 1),
-    name: req.body.name,
-    slug: req.body.slug,
-    image: req.body.image || "https://via.placeholder.com/350x150",
-    ingredients: req.body.ingredients,
-  };
-
-  // push it to our menu array
-  // 💡 The update will not persist as the array is in memory.
-  //menu.push(pizza)
-
-  // update the js file
-  fs.writeFileSync('./db/menu.js', `module.exports = ${JSON.stringify(menu, null, 4)}`)
-  // return the new menu
-  return res.status(201).json({
-    status: 201,
-    data: menu,
-    count: menu.length
-  })
-
-}
-
-```
-const menu = require('../db/menu.js')
-const fs = require('fs')
-const index = (req, res) => {
-
-  // create the response object you want to send
-  const responseData = {
-    data: menu,
-    counter: menu.length
-  }
-
-  // send the response with the 200 status code
-  res.status(200).json(responseData)
-
-}
-
-
-const show = (req, res) => {
-  //console.log(req.params.id);
-  console.log(req);
-  const pizza = menu.find(pizza => pizza.id === Number(req.params.id))
-  //console.log(pizza);
-
-  if (!pizza) {
-    return res.status(404).json({
-      error: `404! Not found`
-    })
-  }
-  return res.status(200).json({
-    data: pizza
-  })
-
-}
-
 
 const store = (req, res) => {
-  console.log(req);
+  // add the new pizza to the menu array
   console.log(req.body);
 
-  // create a new object for the new pizza
+  // create the new pizza object
   const pizza = {
-    id: menu[menu.length - 1].id + 1,
+    id: Number(menu[menu.length - 1].id + 1),
     name: req.body.name,
     slug: req.body.slug,
-    type: req.body.type,
-    image: req.body.image,
-    ingredients: req.body.ingredients
-  }
+    image: req.body.image || "https://via.placeholder.com/350x150",
+    ingredients: req.body.ingredients,
+  };
 
-  // saving in memory 
-  menu.push(pizza)
+  // push it to our menu array
+  // 💡 The update will not persist as the array is in memory.
+  //menu.push(pizza)
 
-  // update 
+  // update the js file
   fs.writeFileSync('./db/menu.js', `module.exports = ${JSON.stringify(menu, null, 4)}`)
-
-  // 
-  res.json({
-    staus: 201,
+  // return the new menu
+  return res.status(201).json({
+    status: 201,
     data: menu,
-    counter: menu.length
+    count: menu.length
   })
 
 }
 
-// update the pizza
+```
+
+## CRUD (U) - Update an existing pizza
+
+In this section we will learn how to update a pizza in our system. We are not yet using a db but we are going to use the node filesyetem module to make our life easier and obtain data persistency.
+
+### Step 1. Add the route
+
+The first thing do to is to add a new route to our `/routes/pizza.js` file and use the `put` method to create a route that respond to a PUT requests.
+
+```js
+// routes/pizza.js
+router.put("/:id", PizzaController.update)
+
+```
+
+### Step 2. Add the controller method
+
+Now we need to add a new method in our controller to make things happen and be able to update the pizza.
+
+Inside `controllers/PizzaController` file, add this method:
+
+```js
+
 const update = (req, res) => {
-
-  console.log(req.params);
-
   // find the pizza by id
-  const pizza = menu.find(pizza => pizza.id === Number(req.params.id))
-  // chek if the pizza exists
-  console.log(pizza);
 
-  if (!pizza) {
-    return res.status(404).json({
-      error: `404! Not found`
-    });
-  }
+
+  // check if the user is updating the correct pizza
+
 
   // update the pizza object
-  pizza.name = req.body.name;
-  pizza.slug = req.body.slug;
-  pizza.type = req.body.type;
-  pizza.image = req.body.image;
-  pizza.ingredients = req.body.ingredients;
-
-  // update the file with the new data
-  fs.writeFileSync('./db/menu.js', `module.exports = ${JSON.stringify(menu, null, 4)}`)
 
 
-  // return the new pizza array
-  res.json({
-    status: 201,
-    data: menu,
-    counter: menu.length
-  })
+  // update the js file
+
+
+  // return the updated menu item
+
 
 }
 
+```
 
-// delete the pizza
-const destroy = (req, res) => {
-  console.log(req.params);
+Inside our method we have outlined the tasks that we need to do in the order they needs to happen. Before talking about the implementation let's export the method from the controller so it can be used by the route we created earlier.
 
-  // find the pizza by id
-  const pizza = menu.find(pizza => pizza.id === Number(req.params.id))
-  console.log(pizza);
+### Step 3. Export the method to the controller
 
-  // chek if the pizza exists
-  if (!pizza) {
-    return res.status(404).json({ error: `404! No pizza found with the this id: ${req.params.id}` });
-  }
+You need to update the exported object in `controllers/PizzaController` file to include this new method otherwise you will not be able to use for the route we created above.
 
-  // delete the pizza
-  const newMenu = menu.filter(pizza => pizza.id !== Number(req.params.id))
-
-  // update the file with the new data
-  fs.writeFileSync('./db/menu.js', `module.exports = ${JSON.stringify(newMenu, null, 4)}`)
-
-  // return the new pizza array
-  res.json({
-    status: 201,
-    data: newMenu,
-    counter: newMenu.length
-  })
-}
-
-
+```js
 
 module.exports = {
   index,
   show,
-  store,
-  update,
-  destroy
+  create,
+  update // <-- add this line
 }
+
+```
+
+Now our app can handle requests made to the following endpoint `/pizza/:id` to update a pizza given its id paramenter.
+
+### Step 4. Implement the update method logic
+
+We have outlined in the previous step what we need to do, now let's recap:
+
+1. find the pizza by id
+2. check if the user is updating the correct pizza
+3. update the pizza object
+4. update the js file
+5. return the updated menu item
+
+Let's start with the fist task, find the pizza by its id parameter and save it in a variable called `pizza`. We can use this variable to check if the user is updating the correct pizza, if not we should return a 404 error since we don't have it in our menu.
+
+**1 Find the pizza**:
+
+```js
+
+const update = (req, res) => {
+  // 1 find the pizza by id
+  const pizza = menu.find((pizza) => pizza.id === parseInt(req.params.id));
+  // continue...
+}
+
+```
+
+**2 Check if the user is updating the correct pizza**:
+Now that we have the pizza object in our variable let's check if it exists, if not return a 404 error.
+
+```js
+const update = (req, res) => {
+  // 1 find the pizza by id
+  const pizza = menu.find((pizza) => pizza.id === parseInt(req.params.id));
+  // 2 check if the user is updating the correct pizza
+  if (!pizza) {
+    return res.status(404).json({ error: "No pizza found with that id" })
+  }
+}
+
+```
+
+In the next step we can finally update the pizza item object then we will move to the next step.
+
+```js
+
+const update = (req, res) => {
+  // 1 find the pizza by id
+  const pizza = menu.find((pizza) => pizza.id === parseInt(req.params.id));
+
+  // 2 check if the user is updating the correct pizza
+  if (!pizza) {
+    return res.status(404).json({ error: "No pizza found with that id" })
+  }
+
+  // 3 update the pizza object
+  pizza.name = req.body.name;
+  pizza.slug = req.body.slug;
+  pizza.image = req.body.image || "https://via.placeholder.com/350x150";
+  pizza.ingredients = req.body.ingredients;
+
+  // continue...
+}
+```
+
+This step is critical because we need to return the updated pizza object back to the user or in our case we want to return the entire list of pizzas.
+
+Before we do that, let's make the pizza update persistent and update out menu file
+
+```js
+
+  // 4. update the js file
+  fs.writeFileSync('./db/menu.js', `module.exports = ${JSON.stringify(menu, null, 4)}`)
+
+```
+
+The line above will convert our array of pizza objects into a string and then write it back to the menu.js file. Now our menu is updated and we can finally return the updated pizzas to the user.
+
+```js
+  // return the updated menu item
+  res.status(200).json({
+    status: 200,
+    data: menu
+  })
+
+```
+
+Now our `update` method should look like this:
+
+```js
+const update = (req, res) => {
+  // 1 find the pizza by id
+  const pizza = menu.find((pizza) => pizza.id === parseInt(req.params.id));
+
+  // 2 check if the user is updating the correct pizza
+  if (!pizza) {
+    return res.status(404).json({ error: "No pizza found with that id" })
+  }
+
+  // 3 update the pizza object
+  pizza.name = req.body.name;
+  pizza.slug = req.body.slug;
+  pizza.image = req.body.image || "https://via.placeholder.com/350x150";
+  pizza.ingredients = req.body.ingredients;
+
+
+  // 4 update the js file
+  fs.writeFileSync('./db/menu.js', `module.exports = ${JSON.stringify(menu, null, 4)}`)
+
+  // 5 return the updated menu item
+  res.status(200).json({
+    status: 200,
+    data: menu
+  })
+
+
+}
+
+```
+
+Our endpoint is ready for testing with Postman. Let's test it out!
+Create a new request in postman and set the method as `PUT` and the URL to `http://localhost:3000/pizze/2`
+
+The dynamic parameter in the URL is replaced by the id of the pizza we want to update.
+In the body tab (in Postman) we can set the body as `raw` and then select `JSON` as the content type.
+
+Try passing this json to the request and press SEND.
+
+```json
+{
+    "name": "Vegan Super Pizza",
+    "slug": "margherita",
+    "type": "classica",
+    "image": "pizze/margherita.webp",
+    "ingredients": [
+        "pomodoro",
+        "mozzarella"
+    ]
+}
+```
+
+If everything is ok, you should see the updated pizza object in the response body togheter with the rest of our menu.
+
+🎊 Congratulations! 🎉
+
+## CRUD (D) - Delete an existing pizza
+
+In this section we will learn how to update a pizza in our system. We are not yet using a db but we are going to use the node filesyetem module to make our life easier and obtain data persistency.
+
+### Step 1. Add the route
+
+The first thing do to is to add a new route to our `/routes/pizza.js` file and use the `delete` method to create a route that respond to a PUT requests.
+
+```js
+// routes/pizza.js
+router.delete("/:id", PizzaController.destroy)
+
+```
+
+### Step 2. Add the controller method
+
+Now we need to add a new method in our controller to make things happen and be able to delete the pizza.
+
+Inside `controllers/PizzaController` file, add this method:
+
+```js
+
+const destroy = (req, res) => {
+  // find the pizza by id
+
+
+  // check if the user is updating the correct pizza
+
+
+  // remove the pizza from the menu
+
+  
+  // update the js file
+
+
+  // return the updated menu item
+
+
+}
+
+```
+
+Inside our method we have outlined the tasks that we need to do in the order they needs to happen. Before talking about the implementation let's export the method from the controller so it can be used by the route we created earlier.
+
+### Step 3. Export the method to the controller
+
+You need to update the exported object in `controllers/PizzaController` file to include this new method otherwise you will not be able to use for the route we created above.
+
+```js
+
+module.exports = {
+  index,
+  show,
+  create,
+  update,
+  destroy // <-- add this line here
+}
+
+```
+
+> note: we are calling the method `destroy` that we created above instead of `delete` as the method name suggests because in js the word delete is not available.
+
+Now our app can handle requests made to the following endpoint `/pizza/:id` to delete a pizza given its id paramenter.
+
+### Step 4. Implement the update method logic
+
+We have outlined in the previous step what we need to do, now let's recap:
+
+1. find the pizza by id
+2. check if the user is destroying the correct pizza
+3. destroy the pizza object
+4. update the js file
+5. return the updated menu item
+
+Let's start with the fist task, find the pizza by its id parameter and save it in a variable called `pizza`. We can use this variable to check if the user is updating the correct pizza, if not we should return a 404 error since we don't have it in our menu.
+
+**1 Find the pizza**:
+
+```js
+
+const destroy = (req, res) => {
+  // 1 find the pizza by id
+  const pizza = menu.find((pizza) => pizza.id === parseInt(req.params.id));
+  // continue...
+}
+
+```
+
+**2 Check if the user is updating the correct pizza**:
+Now that we have the pizza object in our variable let's check if it exists, if not return a 404 error.
+
+```js
+const destroy = (req, res) => {
+  // 1 find the pizza by id
+  const pizza = menu.find((pizza) => pizza.id === parseInt(req.params.id));
+
+  // 2 check if the user is deleting the correct pizza
+  if (!pizza) {
+    return res.status(404).json({ error: "No pizza found with that id" })
+  }
+}
+
+```
+
+In the next step we can delete the array item using filter method and return a new array excluding the deleted item.
+
+```js
+
+const destroy = (req, res) => {
+  // 1 find the pizza by id
+  const pizza = menu.find((pizza) => pizza.id === parseInt(req.params.id));
+
+  // 2 check if the user is updating the correct pizza
+  if (!pizza) {
+    return res.status(404).json({ error: "No pizza found with that id" })
+  }
+
+  // 3 remove the pizza from the menu
+  const newMenu = menu.filter((pizza) => pizza.id !== parseInt(req.params.id));
+
+  // continue...
+}
+```
+
+This step is critical because we need to return the updated pizza object back to the user or in our case we want to return the entire list of pizzas.
+
+Before we do that, let's make the pizza update persistent and update out menu file
+
+```js
+
+  // 4. update the js file
+  fs.writeFileSync('./db/menu.js', `module.exports = ${JSON.stringify(newMenu, null, 4)}`)
+
+```
+
+The line above will convert our array of pizza objects into a string and then write it back to the menu.js file. Now our menu is updated and we can finally return the updated pizzas to the user.
+
+```js
+  // return the updated menu item
+  res.status(200).json({
+    status: 200,
+    data: menu
+  })
+
+```
+
+Now our `destroy` method should look like this:
+
+```js
+const destroy = (req, res) => {
+  // find the pizza by id
+  const pizza = menu.find((pizza) => pizza.id === parseInt(req.params.id));
+
+  // check if the user is deleting the correct pizza
+  if (!pizza) {
+    return res.status(404).json({ error: "No pizza found with that id" })
+  }
+
+  // remove the pizza from the menu
+  const newMenu = menu.filter((pizza) => pizza.id !== parseInt(req.params.id));
+
+  // update the js file
+  fs.writeFileSync('./db/menu.js', `module.exports = ${JSON.stringify(newMenu, null, 4)}`)
+
+  // return the updated menu item
+  res.status(200).json({
+    status: 200,
+    data: newMenu,
+    counter: newMenu.length
+  })
+
+}
+
+
+```
+
+Our endpoint is ready for testing with Postman. Let's test it out!
+Create a new request in postman and set the method as `DELETE` and the URL to `http://localhost:3000/pizze/3`
+
+The dynamic parameter in the URL is replaced by the id of the pizza we want to update.
+This tyme the body of our request will be empty as we don't have any data to send.
+
+If everything is ok, you should see the updated pizza menu in the response body.
+
+🎊 Congratulations! 🎉
+
+## Middleware
+
+As you noticed if we try to use a url that does not exist, we will not get a proper 404 error handled by us. This is because node/express do not handle errors. We need to add a middleware for this.
+
+A middleware is a function that has access to the `req` object, the `res` object and the `next` function, that must be invoked to pass the request to the next middleware in the chain. A middleware runs on every request, there are different types of middleware. Middeware can also be associated to a given path, and restrict its actions to run only on that path and those within it.
+
+It can be used to check if the user is authenticated, or to check if the user has access to the resource they are trying to reach but has also many other use cases.
+
+In our case we will catch any route that does not exist and return a 404 error.
+
+Steps:
+
+- Create a new file in the `middlewares` folder called `notFound.js`.
+- add the middleware code below to the file.
+
+```js
+const notFoundMiddleware = (req, res, next) => {
+  res.status(404).send("Sorry can't find that!")
+}
+
+module.exports = notFoundMiddleware;
+
+```
+
+This function has access to three params, the request object, response object and a next function. The next function is used to call the next middleware in the chain. In the middleware function above we haven't called `next` function because we don't want to call any other middleware in this chain, we just want to return a 404 error.
+
+So we informed the client that the response is completed using the `send()` method that ends the application request-response cycle.
+
+After that we export the middleware as `notFoundMiddleware`.
+Now we need to add the middleware to our app.js file.
+
+## Add the middleware to the app.js file
+
+Open the `app.js` file and scroll to the bottom of the file. Our middleware needs to be added after the last route of our app so it will be executed if none of the routes match.
+
+Import the middleware at the top of your app.js file
+
+```js
+const notFoundMiddleware = require('./middleware/notFoundMiddleware.js')
+```
+
+Add this at the bottom of the app.js file.
+
+```js
+
+// this needs to be the last call in the app, right after all the routes are defined.
+app.use(notFoundMiddleware);
+```
+
+## Add the custom logger middleware to the app.js file
+
+Now that we can handle 404 errors, let's add a custom middleware logger that will print in the console every time a request is made to our server plus some key information.
+
+Create a new file in the middlewares folder called `loggerMiddleware.js`.
+
+```js
+// create a miggleware function
+// notice the third parameter of the function, it's a next function call.
+const loggerMiddleware = (req, res, next) => {
+  const now = new Date().toString();
+  console.error(`
+    Date: ${now} 
+    Method: ${req.method} 
+    URL: ${req.url}`);
+
+  // we need to call next to avoid the request is hanging forever.
+  next();
+
+}
+// export the function created.
+module.exports = loggerMiddleware;
+```
+
+Now that we have a custom middleware, let's add it to our app.js file.
+
+**import** the middleware at the top of your app.js file
+
+```js
+const loggerMiddleware = require('./middleware/loggerMiddleware')
+
+```
+
+next use it. This middleware will be executed before every request is made to the /pizze endpoints.
+
+```js
+app.use('/pizze', loggerMiddleware)
+```
+
+🎊 Congratulations! You have created your first custom middleware.
+
+## Lets add a custom error handler middleware to the app.js file
+
+Now let's complete our project by handling also potential server errors happening in our endpoints.
+
+### Trigger a server error
+
+Before we do that, let's trigger a server error and then see what happens.
+To do that we will add a route based middleware to our app.js file.
+We will place it before our routes definition.
+
+```js
+
+// middleware to trigger a 500 error
+app.use('/pizze', (req, res, next) => {
+  throw new Error("You broke everything dude! 💥");
+}); 
+
+// Your routes here
+// ...
+```
+
+> NOTE: ⚠️ place this before all routes `/pizze` to test the error handling middleware that we will create soon, but remember to removed the code above after we tested the error handling middleware otherwise our endpoints will be broken.
+
+### Lets create a custom error handler middleware
+
+Now let's create a custom error handler middleware. This middleware will be executed when an error is triggered after the client requests any our our endpoints.
+
+> NOTE: Put this middleware at the bottom of your app.js file.
+> nothing should be after it because it will not work.
+
+```js
+
+// Last middleware to handle errors
+app.use((err, req, res, next) => {
+  console.log("Error: ", err.message);
+  // this prints the stack trace of the error
+  console.error(err.stack);
+  res.status(500).send({
+    message: "Something went wrong",
+    error: err.message
+  })
+});
+
+```
+
+Now when we try to send a request to any of our endpoints prefixed with `/pizze` we should see the error message and the stack trace.
+
+This completes the chapter about error handling.
+🎊 Congratulations!
