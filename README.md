@@ -1120,7 +1120,7 @@ app.use('/pizze', (req, res, next) => {
 
 ### Lets create a custom error handler middleware
 
-Now let's create a custom error handler middleware. This middleware will be executed when an error is triggered after the client requests any our our endpoints.
+Now let's create a custom error handler middleware. This middleware will be executed when an error is triggered after the client requests any our endpoints.
 
 > NOTE: Put this middleware at the bottom of your app.js file.
 > nothing should be after it because it will not work.
