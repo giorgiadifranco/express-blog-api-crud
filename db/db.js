@@ -1,5 +1,5 @@
 module.exports = [
-    {},
+    
     {
         "title": "Pane fritto dolce",
         "slug": "pane-fritto-dolce",
